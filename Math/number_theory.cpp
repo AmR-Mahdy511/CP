@@ -13,7 +13,7 @@ void calc_spf()
 }
 // calc smallest prime factor in better time ( linear sieve )
 const int Mod = 1e9 + 7 , Max = 1e7 + 5;
-vector < ll > spf( Max , 0 );
+vector < ll > spf( Max , 0 ) , primes;
 void calc_spf()
 {
     for(int i = 2; i < Max; i++)
