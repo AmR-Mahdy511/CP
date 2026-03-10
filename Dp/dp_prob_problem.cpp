@@ -26,7 +26,7 @@ void solve() {
     int n , s;
     cin >> n >> s;
     vector < vector < double > > memo ( 55 , vector < double > (305 , -1));    
-    function < double ( int , double ) > prob = [&]( int idx , int sum ) -> double
+    function < double ( int , int ) > prob = [&]( int idx , int sum ) -> double
     {
         if( idx > n ) return 0.0; 
         if( idx == n ) return (sum == s) ? 1.0 : 0;
