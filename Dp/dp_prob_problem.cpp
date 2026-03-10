@@ -20,7 +20,7 @@ void fast() {
 /*
                             You have a fair six-sided die. You roll it N times.
                             What is the probability that the sum of the rolls equals S?
-                            (1 ≤ N ≤ 50)                         (1 ≤ S ≤ 6*N)
+                            (1 ≤ N ≤ 50)                         (1 ≤ S ≤ 6*N) 
 */  
 void solve() {
     int n , s;
