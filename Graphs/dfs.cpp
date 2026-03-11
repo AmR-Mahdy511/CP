@@ -64,9 +64,9 @@ bool is_valid(int x, int y, vector<vector<int>>& grid)
 void dfs_grid(int x, int y, vector<vector<int>>& grid){
     if(!is_valid(x, y, grid)) return;
 
-    grid[x][y] = 1; // mark visited
+    grid[x][y] = 1; 
 
-    for(int d=0; d<4; d++){
+    for(int d = 0; d < 4; d++){
         dfs_grid(x + dx[d], y + dy[d], grid);
     }
 }
