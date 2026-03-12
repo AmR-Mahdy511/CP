@@ -89,7 +89,24 @@ for(int i = 1 ; i <= n ; i++)
     }
 }
 */
-
+// ---------- Max size of biggest Connected Component ----------
+function < int (int) > dfs_comp = [&](int node) -> int
+{
+    vis[node] = 1;
+    int cnt = 1;
+     
+    for(auto &it : adj[node])
+       {
+                if( !vis[it] )
+        {
+                cnt += dfs_comp(it);
+        }
+    }
+     
+    return cnt;
+};
+int Max = 0;
+for(int i = 1 ; i <= n ; i++) if( !vis[i] ) Max = max( Max , dfs_comp(i) );
 
 // ---------- Detect Cycle in Directed Graph ----------
 bool dfs_cycle(int u)
