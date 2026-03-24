@@ -35,3 +35,27 @@ struct dsu{
         return group[find(node)];
     }
 };
+// =================================================================================================================================================== //
+struct dsu{
+    vector < int > parent;
+    dsu(int n) { parent.assign( n + 1 , - 1); }
+
+    int find( int u )
+    {
+        if( parent[u] < 0 ) return u;
+        return parent[u] = find(parent[u]);
+    }
+    int same_group( int u , int v ) { return find(u) == find(v); }
+    int get_size( int u ){ return -parent[find(u)]; }
+    bool merge( int u , int v )
+    {
+        int fi_leader = find(u) , sec_leader = find(v);
+        if( fi_leader == sec_leader ) return 0;
+        
+        // fi leader is bigger than sec
+        if( -parent[fi_leader] < -parent[sec_leader] ) swap( fi_leader , sec_leader );
+        parent[fi_leader] += parent[sec_leader];
+        parent[sec_leader] = fi_leader;
+        return 1; 
+    }
+};
