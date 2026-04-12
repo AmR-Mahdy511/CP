@@ -7,32 +7,30 @@ vector < ll > par(N , -1) , path;
  
 void dijkstra(ll start)
 {
-    priority_queue < pair < ll , ll > , vector < pair<ll,ll> >,greater< pair<ll,ll> > > pq;
-    pq.push({0,start});
-    for(int i = 1; i <= n; i++) ans[i] = 1e15;
-    // vis[start] = 1;
+    priority_queue< pair< ll,ll >, vector < pair < ll,ll > >, greater< pair < ll,ll > > > pq;
+    for(int i = 0; i <= n; i++) ans[i] = 1e15;
+    ans[start] = 0;
+    pq.push({0, start});
+
     while(!pq.empty())
     {
-        pair < ll , ll > p = pq.top();
+        auto [cost, node] = pq.top();
         pq.pop();
-        ll node = p.second , cost = p.first;
- 
+
         if(cost > ans[node]) continue;
-        if(vis[node]) continue;
- 
-        vis[node] = 1;
-        ans[node] = cost;        
-        for(auto &[a,b] : adj[node])
+
+        for(auto &[c, to] : adj[node]) 
         {
-            if(ans[a] > cost + b)
+            if(ans[to] > cost + c)
             {
-                ans[a] = cost + b;
-                pq.push({ans[a], a});
-                par[a] = node;
+                ans[to] = cost + c;
+                pq.push({ans[to], to});
+                par[to] = node;
             }
         }
     }
 }
+
 void get_path(ll st , ll e)
 {
      if(ans[e] == 1e15) return;
