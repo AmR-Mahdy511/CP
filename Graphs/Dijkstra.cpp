@@ -1,8 +1,7 @@
 const int N = 1e6 + 5;
-ll n , m ;
+int n , m ;
 vector < pair < ll , ll > > adj[N];
 vector < ll > ans(N) ;
-bool vis[N];
 vector < ll > par(N , -1) , path;
  
 void dijkstra(ll start)
