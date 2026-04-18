@@ -1,7 +1,9 @@
 const int N = 5005;
-struct edge{
-int a,b;
-ll cost;
+struct Edge
+{
+    int u , v , cost;
+    Edge(int u , int v , int cost) : u(u), v(v), cost(cost) {}
+    bool operator < ( const Edge&b ) const{ return cost < b.cost; }
 };
 vector < edge > edges(N) , edges2(N);
 vector < ll > dis(N , 1e18);
