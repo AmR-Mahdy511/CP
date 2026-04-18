@@ -5,10 +5,7 @@ ll cost;
 };
 vector < edge > edges(N) , edges2(N);
 vector < ll > dis(N , 1e18);
-ll n,m;
-bool ok = 1;
-bool vis1[N] , vis2[N];
-
+int n,m;
 ll bellman(int st)
 {
     for(int i = 1 ; i <= n ; i++) dis[i] = 1e18;
