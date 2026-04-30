@@ -62,10 +62,7 @@ struct SparseTable {
 
         for(int j = 1 ; j < LOG ; j++) {
             for(int i = 0 ; i + (1 << j) <= n ; i++) {
-                table[i][j] = merge(
-                    table[i][j - 1],
-                    table[i + (1 << (j - 1))][j - 1]
-                );
+                table[i][j] = merge(  table[i][j - 1], table[i + (1 << (j - 1))][j - 1] );
             }
         }
     }
@@ -73,10 +70,7 @@ struct SparseTable {
     // query range [L, R] in O(1) ( zero based )
     T query(int L , int R) {
         int j = Log[R - L + 1];
-        return merge(
-            table[L][j],
-            table[R - (1 << j) + 1][j]
-        );
+        return merge( table[L][j], table[R - (1 << j) + 1][j]  );
     }
 };
 
