@@ -260,3 +260,51 @@ bool inPolygon(vector<pt> p, pt a, bool strict = true) {
     }
     return numCrossings & 1;
 }
+
+vector < pt > convexHull( vector < pt > pts )
+{
+    int n = pts.size();
+    if( n < 2 ) return pts;
+    // first we need (x,y) y is lowest ( if y1 == y2 ==> take lowesr x )
+    int idx = 0;
+    for(int i = 1 ; i < n ; i++)
+    {
+        if( (pts[i].y < pts[idx].y) or ( pts[i].y == pts[idx].y and pts[i].x < pts[idx].x ))
+        {
+           idx = i;
+        }
+    }
+    swap( pts[0] , pts[idx] );
+    pt st = pts[0];
+    // Sort by polar angle with respect to pivot
+    sort(pts.begin() + 1, pts.end(), [&](pt a, pt b) {
+        T cr = cross(a - st, b - st);
+        if (fabs(cr) > EPS)
+            return cr > 0; // a comes before b if CCW turn
+        return sq(a - st) < sq(b - st); // closer point first if collinear
+    });
+    // Graham's
+    vector < pt > ans;
+    for( auto &p : pts )
+    {
+        while( ans.size() >= 2 and orient( ans[ ans.size() - 2 ] , ans[ ans.size() - 1 ] , p ) <= 0 ) ans.pop_back();
+        ans.push_back(p);
+    }
+    return ans;
+}
+
+T diameterSq(vector<pt>& hull) {
+    int n = hull.size();
+    if (n == 1) return 0;
+    if (n == 2) return sq(hull[1] - hull[0]);
+    T Max = 0;
+    int j = 1;
+    for (int i = 0; i < n; i++) 
+    {
+        pt A = hull[i], B = hull[(i+1) % n];
+        while (cross(B - A, hull[(j+1) % n] - hull[j]) > 0) j = (j + 1) % n;
+        Max = max( Max, sq(hull[j] - hull[i]) );
+        Max = max( Max, sq(hull[j] - hull[(i+1)%n]) );
+    }
+    return Max;
+}
