@@ -45,6 +45,10 @@ ll powmod(ll x, ll y , ll Mod)
     }
     return res;
 }
+
+ll modinv(ll a) {
+    return powmod(a, Mod - 2, Mod);
+}
 // prime factors of number
 vector< pair<ll,ll> > primeFactorze(ll n)
 {
