@@ -6,6 +6,7 @@ Lines — line struct (side, dist, sqDist, proj, refl, shiftLeft, ...), inter, b
 Segments — inDisk, onSegment, properInter, inters, segPoint, segSeg
 Polygons — areaTriangle, areaPolygon, inPolygon
 */
+// dont forget #define EPS 1e-9
 typedef ld T;
 typedef complex<T> pt;
 #define x real()
@@ -307,4 +308,67 @@ T diameterSq(vector<pt>& hull) {
         Max = max( Max, sq(hull[j] - hull[(i+1)%n]) );
     }
     return Max;
+}
+
+// New section //
+////////////////////// Convex Polygon Intersection ////////////////////////////
+
+// Checks if point p lies inside (or on) the left side of the directed edge a -> b.
+bool insideHalfPlane(pt a, pt b, pt p){
+    return orient(a, b, p) >= -EPS;
+}
+
+// Returns the intersection point between the lines supporting segments [a,b] and [c,d].
+pt lineIntersection(pt a, pt b, pt c, pt d){
+    pt out;
+    inter(line(a,b), line(c,d), out);
+    return out;
+}
+
+// Clips a convex polygon against the half-plane to the left of the directed edge a -> b.
+vector<pt> clipPolygon(vector<pt> poly, pt a, pt b){
+
+    vector<pt> res;
+
+    int n = poly.size();
+
+    for(int i = 0 ; i < n ; i++){
+
+        pt cur = poly[i];
+        pt nxt = poly[(i + 1) % n];
+
+        bool inCur = insideHalfPlane(a, b, cur);
+        bool inNxt = insideHalfPlane(a, b, nxt);
+
+        if(inCur && inNxt){
+            res.push_back(nxt);
+        }
+        else if(inCur && !inNxt){
+            res.push_back(lineIntersection(cur, nxt, a, b));
+        }
+        else if(!inCur && inNxt){
+            res.push_back(lineIntersection(cur, nxt, a, b));
+            res.push_back(nxt);
+        }
+    }
+
+    return res;
+}
+
+// Returns the intersection polygon of two convex polygons given in CCW order.
+vector<pt> intersectConvexPolygons(vector<pt> A, vector<pt> B){
+
+    vector<pt> res = A;
+
+    for(int i = 0 ; i < (int)B.size() ; i++){
+
+        pt a = B[i];
+        pt b = B[(i + 1) % B.size()];
+
+        res = clipPolygon(res, a, b);
+
+        if(res.empty()) break;
+    }
+
+    return res;
 }
