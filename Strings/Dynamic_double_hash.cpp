@@ -160,38 +160,7 @@ public:
 };
 
 void solve() {
-    int n , m;
-    cin >> n >> m;
-    string s; cin >> s;
-    Dynamic_double_hash < Node > dh1( n , s );
-    string temp = s;
-    reverse(all(temp));
-    Dynamic_double_hash < Node > dh2( n , temp );
-    for(int i = 0 ; i < m ; i++)
-    {
-        int op; cin >> op;
-        if( op == 1 )
-        {
-            int idx;
-            char ch;
-            cin >> idx >> ch;
-            idx--;
-            dh1.update( idx , ch);
-            int new_idx = n - idx - 1;
-            dh2.update( new_idx , ch );
-        }
-        else
-        {
-            int l , r;
-            cin >> l >> r;
-            l--; r--;
-            pair < int , int > p1 = dh1.get(l,r);
-            int new_l = n - r - 1 , new_r = n - l - 1 ;
-            pair < int , int > p2 = dh2.get(new_l,new_r);
-            if( p1 == p2 ) cout << "YES" << nl;
-            else cout << "NO" << nl;
-        }
-    }
+
 }
 
 signed main() {
