@@ -4,8 +4,8 @@ int rand( int l, int r )
     return uniform_int_distribution<int>( l, r )( rng ) ;
 }
 // dont forget this and it's ( zero based )
-// const int Mod = 1e9 + 7, Mod2 = 1e9 + 9 ;
-// const int Base = rand( 31 , 1e9 ), Base2 = rand( 31 , 1e9 ) ;
+const int Mod = 1e9 + 7, Mod2 = 1e9 + 9 ;
+const int Base = rand( 31 , 1e9 ), Base2 = rand( 31 , 1e9 ) ;
 struct double_hash
 {
     int base1 , Mod1 , inv1 , n;
