@@ -16,28 +16,41 @@ struct KMP
     vector < bool > prefix_equal_suffix( const vector < int > &pi )
     {
         vector < bool > vis( n + 2 , 0 );
-        int cur = n - 1 ;
-        while( pi[cur] )
+        int cur = pi[n - 1];
+        while(cur)
         {
-            vis[pi[cur]] = 1;
-            cur = pi[cur-1];
+            vis[cur] = 1;
+            cur = pi[cur - 1];
         }
         return vis;
     }
     // Get the smallest period of the string, smallest p such that s[i] == s[i % p] for all i
-    int smallest_period( const vector< int > &pi )
+    int smallest_period( const vector<int> &pi )
     {
-        return n - pi[n - 1];
-    }    
+        int k = n - pi[n - 1];
+        return (n % k == 0 ? k : n);
+    }  
     // Check if string is made of repetitions of its smallest period
-    bool is_periodic( const vector< int > &pi )
+    bool is_periodic( const vector<int> &pi )
     {
-        return n % smallest_period(pi) == 0;
-    }    
-    ll cnt_dist_substrings( const vector < int > &pi )
+        return smallest_period(pi) != n;
+    }
+    // take care it's n ^ 2
+    ll cnt_dist_substrings( const string &s )
     {
         ll All = 0;
-        for(int i = 0 ; i < n ; i++) All += i - pi[i];
+        string cur;
+        for(int i = 0 ; i < n ; i++)
+        {
+            cur += s[i];
+            string rev = cur;
+            reverse( all(rev) );
+            vector < int > pi;
+            KMP(rev, pi);
+            int Max = 0;
+            for(int x : pi) Max = max( Max , x );
+            All += cur.size() - Max;
+        }
         return All;
     }
     vector < ll > cnt_prefix_freq( const vector < int > &pi )
