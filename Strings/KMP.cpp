@@ -61,4 +61,21 @@ struct KMP
         for(int i = 1 ; i <= n ; i++) freq[i]++;
         return freq;
     }
+    void KMP_automaton( const string &s , vector < vector < int > > &aut  , vector < int > &pi )
+    {
+        string temp = s + "#";
+        int n = temp.size();
+        aut.assign( n + 1 , vector < int > (26) );
+        for(int i = 0 ; i < n ; i++)
+        {
+            for(int ch = 0 ; ch < 26 ; ch++)
+            {
+                if( i and ( temp[i] - 'a' != ch ) )
+                {
+                    aut[i][ch] = aut[pi[i-1]][ch];
+                }
+                else aut[i][ch] = i + ( temp[i] - 'a' == ch ) ;
+            }
+        }
+    }
 };
