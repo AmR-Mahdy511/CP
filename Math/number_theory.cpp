@@ -31,6 +31,18 @@ void calc_spf()
         }
     }
 }
+// calc Euler's Totient Function / Phi Function
+ll phi( ll n )
+{
+    ll res = n;
+    while( n > 1 )
+    {
+        ll temp = spf[n];
+        while( n % temp == 0 ) n /= temp;
+        res -= ( res / temp );
+    }
+    return res;
+}
 // power mod
 ll powmod(ll x, ll y , ll Mod)
 {
