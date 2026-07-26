@@ -83,6 +83,30 @@ vector< ll > divisors( ll n )
     }
     return v;
 }
+// get the number of divisors for n
+int number_of_divisors(ll n){
+    int divisors = 0;
+    for(int i = 1; i < sqrt(n); i++) if(n % i == 0) divisors += 2;
+    return divisors + (sqrt(n) == (int)sqrt(n));
+}
+
+// get Summation of divisors for n
+ll sum_of_divisors(ll n){
+    ll sum_divisors = 0;
+    for(int i = 1; i < sqrt(n); i++) if(n % i == 0) sum_divisors += ((n / i) + i);
+    ll sq = sqrt(n);
+    return sum_divisors + (sq * sq == n ? sq : 0);
+}
+// sum of divisor of number in range [1 ... n]
+ ll divisorSum(ll num){
+    ll sum = 0;
+    for (ll i = 1; i <= sqrt(num); i++) {
+        ll t1 = i * (num / i - i + 1);
+        ll t2 = (((num / i) * (num / i + 1)) / 2) - ((i * (i + 1)) / 2);
+        sum += t1 + t2;
+        }
+        return sum;
+}
 // sieve
 vector< bool > isPrime( Max, 1 );
 void sieve()
