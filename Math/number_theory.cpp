@@ -43,6 +43,33 @@ ll phi( ll n )
     }
     return res;
 }
+// Calc spf and phi and get primes together
+const int Max = 5e6 + 5;
+vector < int > spf( Max + 5) , primes;
+vector < ull > phi( Max + 5 , 0 );
+void calc_spf()
+{
+    phi[1] = 1;
+    for(int i = 2; i < Max; i++)
+    {
+        if(spf[i] == 0)
+        {
+            spf[i] = i;
+            primes.push_back(i);
+            phi[i] = i - 1;
+        }
+        for(int p : primes)
+        {
+            if(p > spf[i] || 1LL * i * p >= Max) break;
+            spf[i * p] = p;
+            if( i % p == 0 )
+                phi[i * p] = phi[i] * p;
+            else
+                phi[i * p] = phi[i] * (p - 1);
+        }
+    }
+    // vector<int>().swap(spf); optimize for better memory
+}
 // power mod
 ll powmod(ll x, ll y , ll Mod)
 {
