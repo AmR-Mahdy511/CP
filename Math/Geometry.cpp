@@ -355,6 +355,48 @@ vector<pt> clipPolygon(vector<pt> poly, pt a, pt b){
     return res;
 }
 
+//////////////////////////////////////////  CIRCLES   //////////////////////////////////////////
+
+// Finds intersection points between a circle (center o, radius r) and a line l.
+// Returns 0 (no intersection), 1 (tangent), or 2 (two points), and fills 'out'.
+int circleLine(pt o, double r, line l, pair<pt,pt> &out) {
+    double h2 = r*r - l.sqDist(o);
+    if (h2 >= 0) { // the line touches the circle
+        pt p = l.proj(o); // point P
+        pt h = l.v * (T)(sqrt(h2)/abs(l.v)); // vector parallel to l, of length h
+        out = {p-h, p+h};
+    }
+    return 1 + sgn(h2);
+}
+
+// Finds intersection points between two circles (o1,r1) and (o2,r2).
+// Returns 0 (no intersection / concentric), 1 (tangent), or 2 (two points), and fills 'out'.
+int circleCircle(pt o1, T r1, pt o2, T r2, pair<pt,pt> &out) {
+    pt d = o2-o1; T d2 = sq(d);
+    if (d2 == 0) {assert(r1 != r2); return 0;} // concentric circles
+    T pd = (d2 + r1*r1 - r2*r2)/2; // = |O_1P| * d
+    T h2 = r1*r1 - pd*pd/d2; // = h^2
+    if (h2 >= 0) {
+        pt p = o1 + d*pd/d2, h = prep(d)*sqrt(h2/d2);
+        out = {p-h, p+h};
+    }
+    return 1 + sgn(h2);
+}
+
+// Finds common tangent lines between two circles (o1,r1) and (o2,r2).
+// inner=true for internal tangents, false for external. Returns count of tangents, fills 'out'.
+int tangents(pt o1, T r1, pt o2, T r2, bool inner, vector<pair<pt,pt>> &out) {
+    if (inner) r2 = -r2;
+    pt d = o2-o1;
+    T dr = r1-r2, d2 = sq(d), h2 = d2-dr*dr;
+    if (d2 == 0 || h2 < 0) return 0;
+    for (T sign : {-1,1}) {
+        pt v = (d*dr + prep(d)*sqrt(h2)*sign)/d2;
+        out.push_back({o1 + v*r1, o2 + v*r2});
+    }
+    return 1 + (h2 > 0);
+}
+
 // Returns the intersection polygon of two convex polygons given in CCW order.
 vector<pt> intersectConvexPolygons(vector<pt> A, vector<pt> B){
 
