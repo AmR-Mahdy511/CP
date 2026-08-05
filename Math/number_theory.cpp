@@ -1,5 +1,9 @@
 const int Mod = 1e9 + 7 , Max = 1e7 + 5;
-// calc smallest prime factor
+/*
+Time  : O(N log log N)
+Space : O(N)
+Use   : Computes the Smallest Prime Factor (SPF) for every number from 1 to Max.
+*/
 vector < ll > spf( Max , 0 );
 void calc_spf()
 {
@@ -11,8 +15,13 @@ void calc_spf()
         }
     }
 }
-// calc smallest prime factor in better time ( linear sieve )
+
 const int Mod = 1e9 + 7 , Max = 1e7 + 5;
+/*
+Time  : O(N)
+Space : O(N)
+Use   : Computes the Smallest Prime Factor (SPF) for every number using the Linear Sieve algorithm.
+*/
 vector < ll > spf( Max , 0 ) , primes;
 void calc_spf()
 {
@@ -31,7 +40,12 @@ void calc_spf()
         }
     }
 }
-// calc Euler's Totient Function / Phi Function
+
+/*
+Time  : O(log N)
+Space : O(1)
+Use   : Returns Euler's Totient Function φ(n), the count of integers in [1,n] that are coprime with n.
+*/
 ll phi( ll n )
 {
     ll res = n;
@@ -43,7 +57,12 @@ ll phi( ll n )
     }
     return res;
 }
-// Calc spf and phi and get primes together
+
+/*
+Time  : O(N)
+Space : O(N)
+Use   : Computes SPF, Euler's Totient (phi), and stores all prime numbers together using Linear Sieve.
+*/
 const int Max = 5e6 + 5;
 vector < int > spf( Max + 5) , primes;
 vector < ull > phi( Max + 5 , 0 );
@@ -68,9 +87,14 @@ void calc_spf()
                 phi[i * p] = phi[i] * (p - 1);
         }
     }
-    // vector<int>().swap(spf); optimize for better memory
+    // vector<int>().swap(spf); optimize for better memory ( free memory if SPF is no longer needed )
 }
-// power mod
+
+/*
+Time  : O(log exponent)
+Space : O(1)
+Use   : Computes (base^exponent) % mod using Binary Exponentiation
+*/
 ll powmod(ll x, ll y , ll Mod)
 {
     ll res = 1;
@@ -85,10 +109,20 @@ ll powmod(ll x, ll y , ll Mod)
     return res;
 }
 
+/*
+Time  : O(log Mod)
+Space : O(1)
+Use   : Returns the Modular Multiplicative Inverse of a number (Mod must be prime).
+*/
 ll modinv(ll a) {
     return powmod(a, Mod - 2, Mod);
 }
-// prime factors of number
+
+/*
+Time  : O(sqrt(N))
+Space : O(number of prime factors)
+Use   : Returns the Prime Factorization of a number as (prime, exponent).
+*/
 vector< pair<ll,ll> > primeFactorze(ll n)
 {
     vector< pair<ll,ll> > v;
@@ -105,7 +139,12 @@ vector< pair<ll,ll> > primeFactorze(ll n)
     if( n > 1 ) v.push_back({n,1});
     return v;
 }
-// get divisors of number
+
+/*
+Time  : O(sqrt(N))
+Space : O(number of divisors)
+Use   : Returns all divisors of a number in arbitrary order.
+*/
 vector< ll > divisors( ll n )
 {
     vector< ll > v;
@@ -122,21 +161,37 @@ vector< ll > divisors( ll n )
     }
     return v;
 }
-// get the number of divisors for n
-int number_of_divisors(ll n){
-    int divisors = 0;
-    for(int i = 1; i < sqrt(n); i++) if(n % i == 0) divisors += 2;
-    return divisors + (sqrt(n) == (int)sqrt(n));
+
+/*
+Time  : O(sqrt(N))
+Space : O(1)
+Use   : Returns the Number of Divisors of a number.
+*/
+int number_of_divisors(ll n)
+{
+    int cnt = 0;
+    for(ll i = 1; i * i <= n; i++)
+        if(n % i == 0) cnt += (i * i == n) ? 1 : 2;
+    return cnt;
 }
 
-// get Summation of divisors for n
+/*
+Time  : O(sqrt(N))
+Space : O(1)
+Use   : Returns the Sum of all Divisors of a number.
+*/
 ll sum_of_divisors(ll n){
     ll sum_divisors = 0;
-    for(int i = 1; i < sqrt(n); i++) if(n % i == 0) sum_divisors += ((n / i) + i);
+    for(int i = 1; i < sqrtl(n); i++) if(n % i == 0) sum_divisors += ((n / i) + i);
     ll sq = sqrt(n);
     return sum_divisors + (sq * sq == n ? sq : 0);
 }
-// sum of divisor of number in range [1 ... n]
+
+/*
+Time  : O(sqrt(N))
+Space : O(1)
+Use   : Returns the Sum of Divisors for every number in the range [1 ... N].
+*/
  ll divisorSum(ll num){
     ll sum = 0;
     for (ll i = 1; i <= sqrt(num); i++) {
@@ -146,7 +201,12 @@ ll sum_of_divisors(ll n){
         }
         return sum;
 }
-// sieve
+
+/*
+Time  : O(N log log N)
+Space : O(N)
+Use   : Computes all Prime Numbers up to Max using Sieve;
+*/
 vector< bool > isPrime( Max, 1 );
 void sieve()
 {
@@ -162,8 +222,13 @@ void sieve()
         }
     }
 }
-// linear sieve
-vector< bool > isPrime( Max ,1 );vector< int >primes;
+
+/*
+Time  : O(N)
+Space : O(N)
+Use   : Computes all Prime Numbers up to Max using the Linear Sieve.
+*/
+vector < bool > isPrime( Max ,1 );vector< int >primes;
 void linearSieve()
 {
     isPrime[0]=isPrime[1]=0;
@@ -178,8 +243,13 @@ void linearSieve()
         }
     }
 }
-// + * - / wit Mod
+
 const int Mod = 1e9 + 7
+/*
+Time  : O(1)
+Space : O(1)
+Use   : Returns (a + b) or ( a * b ) or ( a / b ) or ( a - b ) modulo Mod.
+*/
 ll add(ll a,ll b)
 {
     return ( (a%Mod) + (b%Mod) )%Mod;
@@ -195,4 +265,114 @@ ll sub(ll a,ll b)
 ll divide(ll a,ll b)
 {
     return mul( a ,powmod(b,Mod-2) );
+}
+
+/*
+Time  : O(log(min(a,b)))
+Space : O(log(min(a,b))) 
+Use   : Solves ax + by = gcd(a,b) and returns valid x, y (Bezout's identity).
+        Can be used to solve ax + by + c = 0:
+        if a solution exists, k = (-c / gcd) ==> x*k , y*k is the answer.
+        Also used to compute modular inverse when the mod is NOT prime.
+*/
+ll Extended_Euclidean(ll a, ll b, ll &x, ll &y)
+{
+    if(b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    ll g = Extended_Euclidean(b, a % b, y, x);
+    y -= (a / b) * x;
+    return g;
+}
+
+/*
+Time  : O(log Mod)
+Space : O(1)
+Use   : Returns Modular Inverse of a mod m, works even when m is NOT prime
+        (requires gcd(a, m) == 1).
+*/
+ll modinv_ext(ll a, ll m)
+{
+    ll x, y;
+    ll g = Extended_Euclidean(a, m, x, y);
+    if(g != 1) return -1; // inverse doesn't exist
+    return ((x % m) + m) % m;
+}
+
+/*
+Time  : O(log N)
+Space : O(1)
+Use   : Computes (b * e) % mod safely, avoiding overflow when mod is close to
+        the limits of ll (used inside Miller_Rabin / Pollard_Rho since normal
+        multiplication a*b can overflow before taking % mod).
+*/
+ll BinMul(ll b, ll e, ll mod)
+{
+    ll res = 0;
+    b %= mod;
+    while(e > 0)
+    {
+        if(e & 1) res = (res + b) % mod;
+        b = (b + b) % mod;
+        e >>= 1;
+    }
+    return res;
+}
+
+/*
+Time  : O(log e)
+Space : O(1)
+Use   : Computes (b ^ e) % mod using Binary Exponentiation, but multiplies
+        using BinMul instead of normal (a*b)%mod, so it stays safe for large
+        mod (up to ~1e18) without overflow.
+        Use this instead of powmod() whenever mod can be large (like inside
+        Miller_Rabin / Pollard_Rho). If mod is always small and fixed
+        (like 1e9+7), powmod() is fine and faster.
+*/
+ll BinPow(ll b, ll e, ll mod)
+{
+    ll res = 1;
+    b %= mod;
+    while(e > 0)
+    {
+        if(e & 1) res = BinMul(res, b, mod);
+        b = BinMul(b, b, mod);
+        e >>= 1;
+    }
+    return res;
+}
+
+/*
+Time  : O(log^3 N) per number, Rounds iterations (Rounds=20 is enough)
+Space : O(1)
+Use   : Probabilistic Primality Test, works correctly for N up to ~1e18
+        (unlike sieve-based isPrime which is limited by array size Max ~1e7).
+        Used to check if a large single number is prime, and as a base case
+        inside Pollard's Rho factorization to stop splitting a factor once
+        it becomes prime.
+*/
+bool Miller_Rabin(ll num, int Rounds = 20)
+{
+    if(num < 2) return false;
+    if(num != 2 && num % 2 == 0) return false;
+
+    ll d = num - 1;
+    while(d % 2 == 0) d >>= 1;
+
+    for(int loop = 1; loop <= Rounds; loop++)
+    {
+        ll a = rand() % (num - 1) + 1, temp = d;
+        ll x = BinPow(a, temp, num);
+        while(temp != num - 1 && x != 1 && x != num - 1)
+        {
+            x = BinMul(x, x, num);
+            temp <<= 1;
+        }
+        if(x != num - 1 && temp % 2 == 0) return false;
+    }
+    // If we reach here, then the number is prime
+    return true;
 }
