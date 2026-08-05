@@ -180,11 +180,16 @@ Time  : O(sqrt(N))
 Space : O(1)
 Use   : Returns the Sum of all Divisors of a number.
 */
-ll sum_of_divisors(ll n){
+ll sum_of_divisors(ll n)
+{
     ll sum_divisors = 0;
-    for(int i = 1; i < sqrtl(n); i++) if(n % i == 0) sum_divisors += ((n / i) + i);
-    ll sq = sqrt(n);
-    return sum_divisors + (sq * sq == n ? sq : 0);
+    for(ll i = 1; i * i <= n; i++)
+        if(n % i == 0)
+        {
+            sum_divisors += i;
+            if(i * i != n) sum_divisors += n / i;
+        }
+    return sum_divisors;
 }
 
 /*
