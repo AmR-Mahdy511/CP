@@ -34,7 +34,7 @@ private:
     {
         if( lazy[node] == -1 ) return ; // no lazy 
  
-        seg[ node ] = lazy[ node ] ;
+        seg[ node ] = lazy[ node ] * ( r - l + 1 );
         if( l != r ) // not a leaf node
         {
             lazy[ 2 * node + 1 ] = lazy[ node ];
@@ -83,10 +83,10 @@ public:
     {
         sz = 1;
         while( sz < n ) sz <<= 1;
-        // skip = T();
+        skip = T();
         // skip = oo ;
         seg.assign( sz << 1 , 0 );
-        lazy.assign( sz << 1 , 0 );
+        lazy.assign( sz << 1 , -1 );
         build( 0 , sz-1 , 0 , v );
     }
     Lazy_SegmentTree( int n )
