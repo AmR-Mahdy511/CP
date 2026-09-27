@@ -47,6 +47,15 @@ struct KMP
     {
         return smallest_period(pi) != n;
     }
+    // check if t is a rotation of s
+    bool is_rotation( const string &s , const string &t )
+    {
+        if( s.size() != t.size() ) return false;
+        string doubled = s + s;
+        vector < int > pi;
+        KMP k( t , pi );
+        return k.count_occurrences( doubled , t , pi ) > 0;
+    }
     // take care it's n ^ 2
     ll cnt_dist_substrings( const string &s )
     {
@@ -72,23 +81,6 @@ struct KMP
         for(int i = n - 1 ; i > 0 ; i--) freq[pi[i-1]] += freq[i];
         for(int i = 1 ; i <= n ; i++) freq[i]++;
         return freq;
-    }
-    void KMP_automaton( const string &s , vector < vector < int > > &aut  , vector < int > &pi )
-    {
-        string temp = s + "#";
-        int n = temp.size();
-        aut.assign( n + 1 , vector < int > (26) );
-        for(int i = 0 ; i < n ; i++)
-        {
-            for(int ch = 0 ; ch < 26 ; ch++)
-            {
-                if( i and ( temp[i] - 'a' != ch ) )
-                {
-                    aut[i][ch] = aut[pi[i-1]][ch];
-                }
-                else aut[i][ch] = i + ( temp[i] - 'a' == ch ) ;
-            }
-        }
     }
     int count_occurrences(const string &s , const string &pat , const vector<int> &pi)
     {
@@ -123,5 +115,35 @@ struct KMP
             }
         } 
         return idx;  
+    }
+    void KMP_automaton( const string &s , vector < vector < int > > &aut  , vector < int > &pi )
+    {
+        string temp = s + "#";
+        int n = temp.size();
+        aut.assign( n + 1 , vector < int > (26) );
+        for(int i = 0 ; i < n ; i++)
+        {
+            for(int ch = 0 ; ch < 26 ; ch++)
+            {
+                if( i and ( temp[i] - 'a' != ch ) )
+                {
+                    aut[i][ch] = aut[pi[i-1]][ch];
+                }
+                else aut[i][ch] = i + ( temp[i] - 'a' == ch ) ;
+            }
+        }
+    }
+    // every k such that s has period k ( s[i] == s[i-k] for all valid i )
+    vector < int > all_periods( const vector < int > &pi )
+    {
+        vector < int > periods;
+        int cur = pi[n - 1];
+        while(cur)
+        {
+            periods.push_back( n - cur );
+            cur = pi[cur - 1];
+        }
+        periods.push_back(n);
+        return periods;
     }
 };
