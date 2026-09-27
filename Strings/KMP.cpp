@@ -24,6 +24,18 @@ struct KMP
         }
         return vis;
     }
+    vector < int > count_prefix_equal_suffix( const vector < int > &pi )
+    {
+        vector < int > ans;
+        int cur = pi[n - 1];
+        while(cur)
+        {
+            // vis[cur] = 1;
+            ans.push_back(cur);
+            cur = pi[cur - 1];
+        }
+        return ans;
+    }
     // Get the smallest period of the string, smallest p such that s[i] == s[i % p] for all i
     int smallest_period( const vector<int> &pi )
     {
@@ -77,5 +89,39 @@ struct KMP
                 else aut[i][ch] = i + ( temp[i] - 'a' == ch ) ;
             }
         }
+    }
+    int count_occurrences(const string &s , const string &pat , const vector<int> &pi)
+    {
+        int ans = 0;
+        for(int i = 0 , j = 0 ; i < s.size() ; i++)
+        {
+            while( j and s[i] != pat[j] ) j = pi[j-1];
+            if( s[i] == pat[j] ) j++;
+            if( j == pat.size() )
+            {
+                ans++;
+                j = pi[j-1];
+            }
+        }
+        return ans;
+    }
+    vector < int > idx_prefix( const string &s , const string &pat )
+    {   
+        vector < int > pi;
+        KMP k( pat,  pi );
+        int ans = k.count_occurrences(s,pat,pi);
+        vector < int > idx; // zero based
+        if( ans == 0 ) return idx;
+        else
+        {
+            string temp = pat + '$' + s;
+            pi.clear();
+            KMP k2( temp , pi );
+            for( int i = 0 ; i < pi.size() ; i++ ) 
+            {
+                if( pi[i] == pat.size() ) idx.push_back( i - 2 * (int)pat.size() );
+            }
+        } 
+        return idx;  
     }
 };
