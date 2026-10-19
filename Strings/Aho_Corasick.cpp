@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 #define ll long long
 #define nl '\n'
 #define sp ' '
@@ -14,6 +14,7 @@ void fast()
     freopen("output.txt", "w", stdout);
     #endif
 }
+vector < string > pats;
 struct AC {
     int N, P;
     const int A = 26;
@@ -30,6 +31,7 @@ struct AC {
     }
     inline int get (char c) {
         return c - 'a';
+        // return (unsigned char)c;
     }
     void add_pattern (const string T, int idx) {
         int u = 0;
@@ -65,7 +67,7 @@ struct AC {
         for (int i = 0;i < L;i++){
             for (int c = 0;c < 26;c++){
                 int v = next[u][c]; 
-                if (out[v].empty()){
+                if (out[v].empty() and !out_link[v]){
                     res.push_back(char('a' + c));
                     u = v;
                     break;
@@ -83,7 +85,53 @@ struct AC {
         }
         return false;
     }
- 
+    vector < int >  first_idx(const string &s , int n ) {
+        int u = 0 ;
+        vector < int > frq(N , -1);
+        vector < int > res(n , -1);
+        for (int i = 0 ; i < s.size() ; i++) {
+            u = advance(u, s[i]);
+            for (int v = out[u].empty() ? out_link[u] : u; v; v = out_link[v])
+            {          
+                if( frq[v] != -1 ) break;
+                frq[v] = i;
+            }
+        }
+        for(int i = 0 ; i < n ; i++)
+        {
+            int u = 0 ;
+            for(auto &c : pats[i] )
+            {
+                u = advance( u , c );
+            }
+            if (frq[u] != -1) res[i] = frq[u] - (int)pats[i].size() + 1;
+        }
+        return res;
+    }
+    vector < vector < int > >  all_idx(const string &s , int n ) {
+        int u = 0 ;
+        vector < vector < int > > frq(N);
+        vector < vector < int > > res(n);
+        for (int i = 0 ; i < s.size() ; i++) {
+            u = advance(u, s[i]);
+            for (int v = out[u].empty() ? out_link[u] : u; v; v = out_link[v])
+            {          
+                // if( frq[v] != -1 ) break;
+                frq[v].push_back(i);
+            }
+        }
+        for(int i = 0 ; i < n ; i++)
+        {
+            int u = 0 ;
+            for(auto &c : pats[i] )
+            {
+                u = advance( u , c );
+            }
+        //    res[i].push_back(frq[u] - pats[i].size() + 1);
+        for (auto &e : frq[u]) res[i].push_back(e - (int)pats[i].size() + 1);
+        }
+        return res;
+    }
     vector < int > match(const string &s, int k) {
         vector < int > res( k , 0 );
         int u = 0;
@@ -96,6 +144,7 @@ struct AC {
         }
         return res;
     }
+
 };
 
 void solve() {
